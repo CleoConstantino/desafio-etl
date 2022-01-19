@@ -1,0 +1,4 @@
+com\desafioetl\desafioetl\controllers\TransformController.class
+com\desafioetl\desafioetl\DesafioEtlApplication.class
+com\desafioetl\desafioetl\services\TransformService.class
+com\desafioetl\desafioetl\models\NumberList.class
