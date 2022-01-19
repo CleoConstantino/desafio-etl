@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 @RestController
 @RequestMapping("api")
 public class TransformController {
@@ -16,7 +19,7 @@ public class TransformController {
     }
 
     @GetMapping("transform")
-    public String transform() throws InterruptedException {
+    public List<BigDecimal> transform() {
         return service.transform();
     }
 

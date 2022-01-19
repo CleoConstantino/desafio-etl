@@ -13,25 +13,26 @@ public class TransformService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public String transform() throws InterruptedException {
+    public List<BigDecimal> transform() {
         List<BigDecimal> numbers = new ArrayList<>();
+        int page = 1;
 
-        int x = 1;
+        do {
+            String url = "http://challenge.dienekes.com.br/api/numbers?page=" + page;
 
-        do  {
-            System.out.println("http://challenge.dienekes.com.br/api/numbers?page=" + x);
-                        NumberList response = restTemplate.getForObject(
-                    "http://challenge.dienekes.com.br/api/numbers?page=" + x,
-                    NumberList.class);
+            try {
+                NumberList response = restTemplate.getForObject(
+                        url,
+                        NumberList.class);
 
+                numbers.addAll(response.getNumbers());
+                System.out.println("Página " + page);
+            } catch (Exception e) {
+                System.out.println("Ocorreu um erro ao carregar a página " + page);
+            }
 
-            numbers.addAll(response.getNumbers());
-            x++;
-
-            Thread.sleep(1000);
-
+            page++;
         } while (!numbers.isEmpty());
-
 
         for (int i = 0; i < numbers.size(); i++) {
             for (int j = 0; j < numbers.size(); j++) {
@@ -43,8 +44,6 @@ public class TransformService {
             }
         }
 
-        System.out.println(numbers);
-        return "Olá";
-
+        return numbers;
     }
 }
