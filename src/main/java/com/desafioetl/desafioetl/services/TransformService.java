@@ -13,6 +13,28 @@ public class TransformService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    public static List<BigDecimal> orderArray(List<BigDecimal> numbers, BigDecimal key) {
+        int low = 0;
+        int high = numbers.size() - 1;
+        int mid;
+        BigDecimal element;
+
+        while (low <= high) {
+            mid = (int) Math.floor((low + high) / 2);
+            element = numbers.get(mid);
+
+            if (element.compareTo(key) == -1) {
+                low = mid + 1;
+            } else if (element.compareTo(key) == 1) {
+                high = mid - 1;
+            }
+        }
+
+        numbers.add(low, key);
+
+        return numbers;
+    }
+
     public List<BigDecimal> transform() {
         List<BigDecimal> numbers = new ArrayList<>();
         NumberList response = null;
@@ -31,19 +53,16 @@ public class TransformService {
             } catch (Exception e) {
                 System.out.println("Ocorreu um erro ao carregar a página " + page);
             }
-            page++;
 
+            page++;
         } while (!response.getNumbers().isEmpty());
 
-        for (int i = 0; i < numbers.size(); i++) {
-            for (int j = 0; j < numbers.size(); j++) {
-                if (numbers.get(i).compareTo(numbers.get(j)) < 0) {
-                    BigDecimal temp = numbers.get(i);
-                    numbers.set(i, numbers.get(j));
-                    numbers.set(j, temp);
-                }
-            }
+        List<BigDecimal> numbersOrdered = new ArrayList<>();
+        for (BigDecimal number : numbers) {
+            orderArray(numbersOrdered, number);
+            System.out.println(Math.floor((numbersOrdered.size() * 100) / numbers.size()) + "%");
         }
-        return numbers;
+
+        return numbersOrdered;
     }
 }
