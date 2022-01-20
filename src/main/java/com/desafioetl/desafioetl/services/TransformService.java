@@ -15,13 +15,14 @@ public class TransformService {
 
     public List<BigDecimal> transform() {
         List<BigDecimal> numbers = new ArrayList<>();
+        NumberList response = null;
         int page = 1;
 
         do {
             String url = "http://challenge.dienekes.com.br/api/numbers?page=" + page;
 
             try {
-                NumberList response = restTemplate.getForObject(
+                response = restTemplate.getForObject(
                         url,
                         NumberList.class);
 
@@ -30,9 +31,9 @@ public class TransformService {
             } catch (Exception e) {
                 System.out.println("Ocorreu um erro ao carregar a página " + page);
             }
-
             page++;
-        } while (!numbers.isEmpty());
+
+        } while (!response.getNumbers().isEmpty());
 
         for (int i = 0; i < numbers.size(); i++) {
             for (int j = 0; j < numbers.size(); j++) {
@@ -43,7 +44,6 @@ public class TransformService {
                 }
             }
         }
-
         return numbers;
     }
 }
